@@ -1,0 +1,13 @@
+<template>
+    <lightning-card>
+      <div class="slds-m-around_medium" if:true={showVoiceControls}>
+        <lightning-button variant={connection.variant} label={connection.label} onclick={handleConnectionClick}></lightning-button>
+        <lightning-button variant={mute.variant} label={mute.label} onclick={handleMuteClick} disabled={mute.isEnabled}></lightning-button>
+        <lightning-button variant={hold.variant} label={hold.label} onclick={handleHoldClick} disabled={hold.isEnabled}></lightning-button>
+        <lightning-button variant={record.variant} label={record.label} onclick={handleRecordClick} disabled={record.isEnabled}></lightning-button>
+      </div>
+      <div class="slds-m-around_medium" if:true={showMessagingControls}>
+        <lightning-button variant={connection.variant} label={connection.label} onclick={handleConnectionClick}></lightning-button>
+      </div>
+    </lightning-card>
+  </template>
