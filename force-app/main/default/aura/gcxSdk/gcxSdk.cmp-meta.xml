@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<AuraDefinitionBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <masterLabel>Genesys Cloud CX SDK component</masterLabel>
+    <description>
+        Genesys Cloud CX SDK component provides user authentication, full access to the Genesys Cloud CX
+        javascript SDK, user conversation events, and integration with Salesforce omnichannel
+    </description>
+</AuraDefinitionBundle>

@@ -1,6 +1,6 @@
 <aura:component controller="PureCloudKnowledgeUtilityController" implements="force:hasRecordId,flexipage:availableForAllPageTypes" access="global">
     <lightning:workspaceAPI aura:id="workspace"/>
-    <lightning:messageChannel type="purecloud__ClientEvent__c" aura:id="clientEventMessageChannel" onMessage="{!c.onClientEvent}" scope="APPLICATION"/>
+    <lightning:messageChannel type="gcxSdkMessageChannel__c" aura:id="clientEventMessageChannel" onMessage="{!c.onClientEvent}" scope="APPLICATION"/>
     <aura:attribute name="knowledgeArticles" type="List"/>
     <aura:attribute name="numResults" type="Integer" default="0"/>
     <aura:registerEvent name="refreshEvent" type="markup://lightning:nextBestActionsRefresh" />

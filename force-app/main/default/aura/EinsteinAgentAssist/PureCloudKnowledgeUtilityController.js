@@ -20,9 +20,9 @@
     },
     onClientEvent: function (component, message, helper) {
         var eventData = message.getParams();
-        
         //subscribe to notification events on Lightning Message Channel
         if (eventData && eventData.type === 'InitialSetup') {
+            console.log("Einstein agent assist: received InitialSetup event");
             component.find('clientEventMessageChannel').publish({
                 "type": "PureCloud.subscribe",
  				"data": {
@@ -34,13 +34,26 @@
         
         //handle conversationTranscription events, which are voice transcriptions
         if (eventData && eventData.category === 'conversationTranscription') {
+            console.log("Einstein agent assist: received event: " + JSON.stringify(eventData));
             helper.handleConversationTranscription(component, eventData);
         }
         
         //handle messaging and web chat update events
         if (eventData && (eventData.category === 'messageUpdate' || eventData.category === 'chatUpdate')) {
+            console.log("Einstein agent assist: received event: " + JSON.stringify(eventData));
             helper.handleMessageUpdate(component, eventData);
         }
         
+    },
+
+    init: function(component, event, helper){
+        console.log("Einstein agent assist: initializing");
+        component.find('clientEventMessageChannel').publish({
+            "type": "PureCloud.subscribe",
+            "data": {
+                "type": "Notification",
+                "categories": ["chatUpdate", "messageUpdate", "conversationTranscription"]
+            }
+        });
     }
 })

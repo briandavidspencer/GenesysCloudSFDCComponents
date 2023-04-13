@@ -41,7 +41,6 @@ $RECYCLE.BIN/
 .env
 
 #incomplete and ineffective modules
-**/aura/gcxSdk/
 **/classes/omniChannel/
 **/flexipages/
 **/flows/

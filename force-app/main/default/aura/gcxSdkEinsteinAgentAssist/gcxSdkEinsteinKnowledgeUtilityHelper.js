@@ -1,4 +1,7 @@
 ({
+    conversationId: "",
+    isRendered: false,
+
     searchKnowledge : function(component, searchValue, fullResponse) {
         var action = component.get("c.searchKnowledge");
         action.setParams({'searchValue': searchValue});
@@ -61,7 +64,7 @@
     },
 
     updateNextBestAction : function(component, utterance) {
-        var action = component.get("c.updateLastUtterance");
+        var action = component.get("c.updateExperienceLastUtterance");
         action.setParams({'recordId': component.get("v.recordId"), 'utterance': utterance});
         action.setCallback(this, function(response) {
             var appEvt = $A.get("e.lightning:nextBestActionsRefresh");
@@ -72,11 +75,11 @@
     },
     
     handleConversationTranscription : function(component, eventData) {
-        if (eventData && eventData.data.transcripts) {
-            var x = eventData.data.transcripts.length - 1;
-            if (eventData.data.transcripts[x].channel == "EXTERNAL") {
-                this.updateNextBestAction(component, eventData.data.transcripts[x].alternatives[0].transcript);
-                this.getKnowledgeProbabilities(component, eventData.data.transcripts[x].alternatives[0].transcript);
+        if (eventData && eventData.body.transcripts) {
+            var x = eventData.body.transcripts.length - 1;
+            if (eventData.body.transcripts[x].channel == "EXTERNAL") {
+                this.updateNextBestAction(component, eventData.body.transcripts[x].alternatives[0].transcript);
+                this.getKnowledgeProbabilities(component, eventData.body.transcripts[x].alternatives[0].transcript);
             }
         }
     },
@@ -89,6 +92,28 @@
                 this.getKnowledgeProbabilities(component, eventData.data.messages[x].body);
             }
         }
+    },
+
+    requestResend: function(component) {
+        component.find('clientEventMessageChannel').publish({
+            "type": "resend",
+            "body": {}
+        });
+    },
+
+    publishTranscriptSubscription: function(component, eventData) {
+        if (this.conversationId == "") {
+            this.conversationId = eventData.body.id;
+            component.find('clientEventMessageChannel').publish({
+                "type": "API",
+                "body": {
+                    "API": "notificationsApi",
+                    "Command": "postNotificationsChannelSubscriptions",
+                    "Payload": "notificationChannel.id, [ { \"id\": \"v2.conversations." + this.conversationId + ".transcription\" } ]"
+                }
+            });
+        }
+        this.handleConversationTranscription(component, eventData);
     },
 
     handleResponseError: function(errorMsg, response) {

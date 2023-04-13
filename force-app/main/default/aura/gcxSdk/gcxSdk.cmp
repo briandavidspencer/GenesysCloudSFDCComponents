@@ -1,0 +1,16 @@
+<aura:component controller="omniChannel" implements="flexipage:availableForAllPageTypes" access="global" >
+    <ltng:require
+        scripts="{!$Resource.GenesysCloudJsSdk}"
+        afterScriptsLoaded="{!c.scriptsLoaded}"
+    />
+
+    <lightning:omniToolkitAPI aura:id="omniToolkit" />
+    <aura:handler event="lightning:omniChannelStatusChanged" action="{!c.onStatusChanged }"/>
+
+    <lightning:messageChannel type="gcxSdkMessageChannel__c" aura:id="clientEventMessageChannel" onMessage="{!c.handleMessage}" scope="APPLICATION"/>
+
+    <aura:attribute name="userId" type="String" default="" />
+    <aura:attribute name="conversationIds" type="String[]" />
+    <aura:attribute name="priorMessage" type="String" default="" />
+
+</aura:component>
