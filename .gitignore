@@ -45,11 +45,6 @@ $RECYCLE.BIN/
 **/flexipages/
 **/flows/
 **/layouts/
-**/lwc/gCX_Interaction_Transcript/
-**/lwc/gCX_Messaging_Service/
-**/lwc/gcxSdkInteractionControls/
-**/lwc/messageViewer/
-**/lwc/transcriptViewer/
 **/messageChannels/
 **/objects/
 **/pages/

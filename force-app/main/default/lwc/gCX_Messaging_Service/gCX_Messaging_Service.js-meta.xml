@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LightningComponentBundle xmlns="http://soap.sforce.com/2006/04/metadata">
+    <apiVersion>56.0</apiVersion>
+    <masterLabel>Genesys Cloud CX messaging interaction component</masterLabel>
+    <description>
+        Genesys Cloud CX messaging interaction component publishes a real-time messaging session
+        and provides response controls
+    </description>
+    <isExposed>true</isExposed>
+    <targets>
+        <target>lightning__RecordPage</target>
+    </targets>
+</LightningComponentBundle>

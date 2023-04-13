@@ -1,0 +1,43 @@
+<template>
+    <lightning-card>
+  
+      <section role="log" class="slds-chat slds-scrollable" style="max-height: 20rem;">
+        <ul class="slds-chat-list">
+          <template for:each={messages} for:item="message">
+  
+            <li key={message.id} if:false={message.isExternal} class="slds-chat-listitem slds-chat-listitem_inbound">
+              <div class="slds-chat-message">
+                <div class="slds-chat-message__body">
+                  <div class="slds-chat-message__text slds-chat-message__text_inbound">
+                    <span >{message.body}</span>
+                  </div>
+                  <div class="slds-chat-message__meta">
+                    {message.role} • <lightning-formatted-date-time value={message.time} hour="numeric" minute="2-digit"></lightning-formatted-date-time>
+                  </div>
+                </div>
+              </div>
+            </li>
+  
+            <li key={message.id} if:true={message.isExternal} class="slds-chat-listitem slds-chat-listitem_outbound">
+              <div class="slds-chat-message">
+                <div class="slds-chat-message__body">
+                  <div class="slds-chat-message__text slds-chat-message__text_outbound">
+                    <span >{message.body}</span>
+                  </div>
+                  <div class="slds-chat-message__meta">
+                    {message.role} • <lightning-formatted-date-time value={message.time} hour="numeric" minute="2-digit"></lightning-formatted-date-time>
+                  </div>
+                </div>
+              </div>
+            </li>
+  
+          </template>
+  
+        </ul>
+      </section>
+      <div if:true={activeConversation} class="slds-form-element__control">
+        <input type="text" placeholder="" class="slds-input" onkeydown={handleKeyDown} style="width: 85%;"/>
+        <lightning-button label="Send" onclick={publishSendMessage} style="width: 15%;"></lightning-button>
+      </div>
+    </lightning-card>
+  </template>
