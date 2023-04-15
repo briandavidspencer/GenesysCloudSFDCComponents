@@ -1,0 +1,95 @@
+@isTest
+private class PureCloudKnowledgeUtilityControllerTests {
+    
+    public static testMethod void testSearchKnowledge() {
+		String jsonString = PureCloudKnowledgeUtilityController.searchKnowledge('hello');
+        System.assert(String.isNotBlank(jsonString));
+    }
+
+    public static testMethod void testCalculateIntent() {
+        
+        ContentVersion cv = new ContentVersion();
+        cv.Title = 'einstein_platform';
+        cv.PathOnClient = 'einstein_platform.pem';
+        Blob b = EncodingUtil.base64Decode('This is Version Data');
+        cv.VersionData = Blob.valueOf('This is Version Data');
+        insert cv;
+        
+        Test.setMock(HttpCalloutMock.class, new SalesforceHttpCalloutMock());
+        string chat = 'can you help with my billing';
+        Test.startTest();
+        List<Object> listOfIntents = PureCloudKnowledgeUtilityController.calculateIntent(chat); 
+        Test.stopTest();
+        System.assert(listOfIntents.size() == 2);
+    }
+    
+    public static testMethod void testCalculateIntentNoPemFile() {
+        
+        try {
+            Test.setMock(HttpCalloutMock.class, new SalesforceHttpCalloutMock());
+            string chat = 'can you help with my billing';
+            Test.startTest();
+            List<Object> listOfIntents = PureCloudKnowledgeUtilityController.calculateIntent(chat); 
+            Test.stopTest();
+            System.assert(false);
+        } catch(Exception e) {
+            System.assert(true);
+        } 
+    }
+    
+    public static testMethod void testBadServerResponse() {
+        
+        ContentVersion cv = new ContentVersion();
+        cv.Title = 'einstein_platform';
+        cv.PathOnClient = 'einstein_platform.pem';
+        Blob b = EncodingUtil.base64Decode('This is Version Data');
+        cv.VersionData = Blob.valueOf('This is Version Data');
+        insert cv;
+        
+        try {
+            Test.setMock(HttpCalloutMock.class, new FailedHttpCalloutMock());
+            string chat = 'can you help with my billing';
+            Test.startTest();
+            List<Object> listOfIntents = PureCloudKnowledgeUtilityController.calculateIntent(chat); 
+            Test.stopTest();
+            System.assert(false);
+        } catch(Exception e) {
+            System.assert(true);
+        }
+    }
+       
+    public class SalesforceHttpCalloutMock implements HttpCalloutMock {
+        
+        public HttpResponse respond(HttpRequest req) { 
+            HttpResponse res = new HttpResponse();
+            res.setHeader('Content-type', 'application/json');
+            res.setStatusCode(200);
+            res.setStatus('OK');
+            if(req.getEndpoint() == 'https://api.einstein.ai/v2/language/intent') {
+                res.setBody('{\"probabilities\":[{\"label\": \"How to Review Purchase History\", \"probability\": 0.21420689},'+ 
+                            '{\"label\": \"How to Review Purchase History\", \"probability\": 0.21420689}] }');                           
+            } if(req.getEndpoint() == 'https://api.einstein.ai/v2/oauth2/token') {
+                res.setBody('{\"access_token\" : \"foobar\"}');
+            }  
+            return res;
+        }
+    }
+    
+    public class FailedHttpCalloutMock implements HttpCalloutMock {
+        
+        public HttpResponse respond(HttpRequest req) { 
+            HttpResponse res = new HttpResponse();
+            res.setHeader('Content-type', 'application/json');
+            if(req.getEndpoint() == 'https://api.einstein.ai/v2/language/intent') {
+                res.setStatusCode(404);
+                res.setStatus('Not Found');
+                res.setBody('{}');                           
+            } if(req.getEndpoint() == 'https://api.einstein.ai/v2/oauth2/token') {
+                res.setStatusCode(200);
+                res.setStatus('OK');
+                res.setBody('{\"access_token\" : \"foobar\"}');
+            }  
+            return res;
+        }
+    }
+}
