@@ -47,13 +47,16 @@
     },
 
     init: function(component, event, helper){
-        console.log("Einstein agent assist: initializing");
-        component.find('clientEventMessageChannel').publish({
-            "type": "PureCloud.subscribe",
-            "data": {
-                "type": "Notification",
-                "categories": ["chatUpdate", "messageUpdate", "conversationTranscription"]
-            }
-        });
+        if (!helper.isRendered) {
+            helper.isRendered = true;
+            console.log("Einstein agent assist: initializing");
+            component.find('clientEventMessageChannel').publish({
+                "type": "PureCloud.subscribe",
+                "data": {
+                    "type": "Notification",
+                    "categories": ["chatUpdate", "messageUpdate", "conversationTranscription"]
+                }
+            });
+        }
     }
 })

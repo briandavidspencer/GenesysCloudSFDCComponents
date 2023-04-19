@@ -8,16 +8,23 @@ public with sharing class getTranscript {
         } catch (Exception e) {
             return e.getMessage();
         }
-        return transcripts.get(0).purecloud__Body__c;
+        if (transcripts.size() > 0)
+            return transcripts.get(0).purecloud__Body__c;
+        else
+            return '';
     }
 
     @AuraEnabled
     public static void linkTranscriptToActivity(String interactionId, String transcriptId) {
+        List<Task> activities;
         Task activityToUpdate;
         try {
-            activityToUpdate = [SELECT PureCloud_Chat_Transcript__c FROM Task WHERE Interaction_Id__c = :interactionId];
-            activityToUpdate.PureCloud_Chat_Transcript__c = transcriptId;
-            update activityToUpdate;
+            activities = [SELECT PureCloud_Chat_Transcript__c FROM Task WHERE Interaction_Id__c = :interactionId];
+            if (activities.size() > 0) {
+                activityToUpdate = activities.get(0);
+                activityToUpdate.PureCloud_Chat_Transcript__c = transcriptId;
+                update activityToUpdate;
+            }
         }
         catch (DmlException e) {
             System.debug('linkTranscriptToActivity error: ' + e.getMessage());

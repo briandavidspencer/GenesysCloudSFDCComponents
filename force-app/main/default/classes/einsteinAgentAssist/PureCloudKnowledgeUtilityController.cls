@@ -4,6 +4,7 @@ public with sharing class PureCloudKnowledgeUtilityController {
     public static String searchKnowledge(String searchValue) {
         String results = '';
         if(searchValue.length() > 3) {
+
             String searchString = 'FIND \'' + String.escapeSingleQuotes(searchValue) + '\' IN ALL FIELDS RETURNING Knowledge__kav(Id, Title, ArticleNumber LIMIT 10)';
             List<List<SObject>> searchList = search.query(searchString);
             
@@ -160,19 +161,10 @@ public with sharing class PureCloudKnowledgeUtilityController {
         }
         catch (DmlException e) {
             System.debug('updateLastUtterance error: ' + e.getMessage());
+            throw e;
         }
-    }
-
-    @auraEnabled
-    public static void updateExperienceLastUtterance(String recordId, String utterance){
-        Experience__c experienceToUpdate;
-        try {
-            experienceToUpdate = [SELECT Last_utterance__c FROM Experience__c WHERE Id = :recordId];
-            experienceToUpdate.Last_utterance__c = utterance;
-            update experienceToUpdate;
-        }
-        catch (DmlException e) {
-            System.debug('updateExperienceLastUtterance error: ' + e.getMessage());
+        catch (Exception e) {
+            throw e;
         }
     }
 }

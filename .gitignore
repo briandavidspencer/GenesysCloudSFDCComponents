@@ -39,17 +39,3 @@ $RECYCLE.BIN/
 
 # Local environment variables
 .env
-
-#incomplete and ineffective modules
-**/classes/omniChannel/
-**/flexipages/
-**/flows/
-**/layouts/
-**/messageChannels/
-**/objects/
-**/pages/
-**/queueRoutingConfigs/
-**/queues/
-**/recordActionDeployments/
-**/serviceChannels/
-**/staticrecources/

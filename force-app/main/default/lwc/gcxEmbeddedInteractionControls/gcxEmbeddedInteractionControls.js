@@ -172,6 +172,14 @@ export default class gcxEmbeddedInteractionControls extends LightningElement {
                     delete this.interaction;
                     this.showMessagingControls = false;
                     this.showVoiceControls = false;
+                    this.connection.isEnabled = false;
+                    this.connection.isConnected = false;
+                    this.hold.isHeld = false;
+                    this.hold.isEnabled = false;
+                    this.mute.isEnabled = false;
+                    this.mute.isMuted = false;
+                    this.record.isEnabled = false;
+                    this.record.isRecording = false;
                     break;
                 default:
             }

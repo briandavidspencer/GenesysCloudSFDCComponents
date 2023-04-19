@@ -34,7 +34,7 @@ This repository contains a Salesforce Lightning component, Apex classes, and sup
 
 ## Installation
 
-Install the [unmanaged package](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3i000000RQru).
+Install the [unmanaged package](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5a0000022YP1&isdtp=p1).
 
 ## Configuration
 
@@ -43,7 +43,7 @@ Install the [unmanaged package](https://login.salesforce.com/packaging/installPa
 **Important**: If the name of your knowledge article object is different from the default name (Knowledge__kav), you will not see any search results. To fix the problem, replace every instance of "Knowledge__kav" in PureCloudKnowledgeUtilityController.apxc with your object name.
 
 1. [Enable Salesforce Knowledge](https://developer.salesforce.com/docs/atlas.en-us.knowledge_dev.meta/knowledge_dev/knowledge_development_setup_enable.htm).
-2. Import Salesforce Knowledge articles from the [simple-sample-knowledge-articles.csv](resources/knowledge%20articles/simple-sample-knowledge-articles.csv) file.<br />
+2. Import Salesforce Knowledge articles from the [simple-sample-knowledge-articles.csv](/resources/knowledge%20articles/simple-sample-knowledge-articles.csv) file.<br />
    You can import articles one of two ways:
    * Use [Import Articles](https://help.salesforce.com/articleView?id=knowledge_article_importer.htm&type=5) in Salesforce.
    * Download Salesforce's [Data Loader](https://help.salesforce.com/articleView?id=data_loader.htm&type=5) application.
@@ -60,7 +60,7 @@ Install the [unmanaged package](https://login.salesforce.com/packaging/installPa
 
 ### Train Salesforce Einstein
 
-These steps use the example dataset in the [einstein-example-dataset.csv](resources/einstein-example-dataset.csv) file. The following API calls and information come from the  [Salesforce Einstein documentation](https://metamind.readme.io/docs/create-a-lang-dataset-from-file).
+These steps use the example dataset in the [einstein-example-dataset.csv](/resources/einstein-example-dataset.csv) file. The following API calls and information come from the  [Salesforce Einstein documentation](https://metamind.readme.io/docs/create-a-lang-dataset-from-file).
 1. Generate an OAuth token to use in the API calls.
    a. Go to [Generate an OAuth token](https://api.einstein.ai/token).
    b. Enter your credentials for Einstein and the key from the **einstein_platform.pem** file.
@@ -94,23 +94,21 @@ These steps use the example dataset in the [einstein-example-dataset.csv](resour
 
 ### Install the Unmanaged Package
 
-1. In your Salesforce organization, install the [unmanaged package](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t3i000000RQXB).
+1. In your Salesforce organization, install the [unmanaged package](https://login.salesforce.com/packaging/installPackage.apexp?p0=04t5a0000022YP1&isdtp=p1).
 2. Add a **[Remote Site Setting](https://help.salesforce.com/articleView?id=configuring_remoteproxy.htm&type=5)**. Set **Remote Site URL** to `https://api.einstein.ai`.
 3. (Optional) To dynamically create access tokens, use [Salesforce Files](https://help.salesforce.com/articleView?id=collab_salesforce_files_parent.htm&type=5) to upload the **einstein_platform.pem** file. You downloaded this file when you signed up for Salesforce Einstein.<br />
    a. Add the **Files** object as a [navigation item](https://help.salesforce.com/articleView?id=customize_lex_nav_menus_create.htm&type=0) to a Lighting app.<br />
    b. Open a Lightning app and click **Files** in the top toolbar. Then click **Upload Files**.
 4. Add values to the **PureCloudKnowledgeConstants** Apex class. At a minimum, add **USER_EMAIL** and **MODEL_ID**. <br />
    If you did not upload the **einstein_platform.pem** file in step 3, then also add **ACCESS_TOKEN**. The unmanaged package uses this access token.
-5. Add the **PureCloudKnowledgeUtility** Lightning component as a [utility item](https://help.salesforce.com/articleView?id=dev_apps_lightning_utilities.htm&type=0) to a Lightning app. This Lightning app must have an Open CTI Softphone.<br />
-   **Note**: Be sure to select **Start automatically**.
+5. Add the **Einstein Agent Assist** Lightning component as a [utility item](https://help.salesforce.com/articleView?id=dev_apps_lightning_utilities.htm&type=0) to a Lightning app or as a custom component on a [Lightning Page](https://help.salesforce.com/s/articleView?id=sf.lightning_page_overview.htm&type=5). This Lightning app must have an Open CTI Softphone.<br />
+   **Note**: Be sure to select **Start automatically** if running as a utility item.
 6. Alternatively, add the lightning component into any object's page if preferred over a utility item.
 
-### Update code if you want to enable Einstein Next Best Action integration
+### Configure Einstein Next Best Action (optional)
 
-1. Update the Case object by adding a custom field with the API name Last_utterance__c configured as a text field. This will receive the transcript utterances that Einstein NBA strategies will evaluate. (Alternatively, change the field name to which the update targets within line 158 of the file PureCloudKnowledgeUtilityController.apxc...this code can be extended to support multiple objects, as well)
-2. Uncomment lines 154-165 of the file PureCloudKnowledgeUtilityController.apxc
-3. Uncomment line 89 of the file PureCloudKnowledgeUtilityHelper.js
-4. Uncomment line 7 of the file PureCloudKnowledgeUtility.cmp
+1. The Einstein Agent Assist component is designed to facilitate Einstein Next Best Action on Contact records by default.
+2. Configure and deploy [Einstein Next Best Action in Salesforce](https://help.salesforce.com/s/articleView?language=en_US&type=5&id=sf.einstein_next_best_action.htm).
 
 ## Usage
 
@@ -118,8 +116,3 @@ These steps use the example dataset in the [einstein-example-dataset.csv](resour
 2. As the customer, send or say a message that corresponds with the dataset that was used to train Einstein.
 3. Open the Lightning component. The Lightning component updates with articles related to the interaction.
 4. Click an article. Confirm that the article opens inside Salesforce.
-
-
-# Additional Information
-
-This content is [licensed](LICENSE) under the MIT license.

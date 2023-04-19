@@ -1,4 +1,6 @@
 ({
+    isRendered: false,
+    
     searchKnowledge : function(component, searchValue, fullResponse) {
         var action = component.get("c.searchKnowledge");
         action.setParams({'searchValue': searchValue});

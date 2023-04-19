@@ -13,6 +13,7 @@
         <object>Contact</object>
         <object>Case</object>
         <object>Account</object>
+        <object>Experience__c</object>
       </objects>
     </targetConfig>
   </targetConfigs>
